@@ -1,0 +1,106 @@
+Tunza walati
+|
+|--Registration form(10 tasks)
+|  |---login form
+|  |---registeration form
+|  |---reset password form
+|  |---forgot password form
+|  |---logout form
+|  |---change password form
+|  |---update profile form
+|  |---delete account form
+|  |---view profile form
+|  |---view all users form
+|
+|
+|--Admin Dashboard
+|  |---view all users
+|  |---view all products
+|  |---add product
+|  |---edit product
+|  |---delete product
+|  |---view all orders
+|  |---view all customers
+|  |---view all employees
+|  |---add employee
+|  |---edit employee
+|  |---delete employee
+|  |---view all categories
+|  |---add category
+|  |---edit category
+|  |---delete category
+|  |---view all orders
+|  |---view all customers
+|  |---view all employees
+|  |---view all categories
+|  |---view all orders
+|  |---view all customers
+|  |---view all employees
+|  |---view all categories
+|
+|
+|--Customer Dashboard
+|  |---view all products
+|  |---view all orders
+|  |---add product
+|  |---edit product
+|  |---delete product
+|  |---view all orders
+|  |---view all customers
+|  |---view all employees
+|  |---view all categories
+|  |---view all orders
+|  |---view all customers
+|  |---view all employees
+|  |---view all categories
+|  |---view all orders
+|  |---view all customers
+|  |---view all employees
+|  |---view all categories
+|
+|
+|--style
+   |--main.css
+   |--tables.css
+
+|
+|
+|--js
+   |--main.js
+|
+|--database
+   |--config.php
+   |--submit.php
+   |--login.php
+   |--logout.php
+   |--register.php
+   |--reset_password.php
+   |--forgot_password.php
+   |--change_password.php
+   |--update_profile.php
+   |--delete_account.php
+   |--view_profile.php
+   |--view_all_users.php
+   |--view_all_products.php
+   |--add_product.php
+   |--edit_product.php
+   |--delete_product.php
+   |--view_all_orders.php
+   |--view_all_customers.php
+   |--view_all_employees.php
+   |--add_employee.php
+   |--edit_employee.php
+   |--delete_employee.php
+   |--view_all_categories.php
+   |--add_category.php
+   |--edit_category.php
+   |--delete_category.php
+   |--view_all_orders.php
+   |--view_all_customers.php
+   |--view_all_employees.php
+   |--view_all_categories.php
+
+   
+|
+|--index.html
+|--main.xml

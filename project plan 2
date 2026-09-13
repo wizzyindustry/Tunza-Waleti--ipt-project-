@@ -1,0 +1,62 @@
+tunza-waleti/
+├── index.php              # Landing/Login page
+├── dashboard.php          # Main dashboard
+├── deposit.php            # Deposit page
+├── withdraw.php           # Withdrawal page
+├── history.php            # Transaction history
+├── profile.php            # User profile
+├── logout.php             # Logout handler
+├── register.php           # Registration page
+├── verify.php             # Email/Phone verification
+├── config/
+│   ├── database.php       # Database configuration
+│   ├── functions.php      # Core functions
+│   └── constants.php      # System constants
+├── includes/
+│   ├── header.php         # Page header
+│   ├── footer.php         # Page footer
+│   ├── sidebar.php        # Navigation sidebar
+│   └── auth_check.php     # Authentication check
+├── classes/
+│   ├── User.php           # User class
+│   ├── Savings.php        # Savings class
+│   ├── Transaction.php    # Transaction class
+│   ├── Notification.php   # Notification class
+│   └── PaymentGateway.php # Payment integration
+├── api/
+│   ├── auth.php           # Authentication API
+│   ├── savings.php        # Savings API
+│   ├── transactions.php   # Transactions API
+│   └── notifications.php  # Notifications API
+├── assets/
+│   ├── css/
+│   │   ├── style.css      # Global styles
+│   │   ├── dashboard.css  # Dashboard styles
+│   │   └── responsive.css # Responsive styles
+│   ├── js/
+│   │   ├── main.js        # Core JavaScript
+│   │   ├── dashboard.js   # Dashboard scripts
+│   │   ├── deposit.js     # Deposit scripts
+│   │   ├── validation.js  # Form validation
+│   │   └── ajax.js        # AJAX requests
+│   └── images/
+│       ├── logo.png
+│       ├── favicon.ico
+│       └── icons/
+├── vendor/
+│   ├── composer.json      # PHP dependencies
+│   └── autoload.php       # Composer autoload
+├── tests/
+│   ├── unit/              # Unit tests
+│   ├── integration/       # Integration tests
+│   └── selenium/          # UI tests
+├── docs/
+│   ├── api/               # API documentation
+│   ├── user_guide/        # User documentation
+│   └── developer/         # Developer docs
+├── logs/
+│   └── app.log            # Application logs
+├── sql/
+│   ├── schema.sql         # Database schema
+│   └── seed_data.sql      # Initial data
+└── .env                   # Environment variables

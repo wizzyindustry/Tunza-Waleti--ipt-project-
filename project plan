@@ -1,0 +1,31 @@
+tunza-waleti/
+├── index.php
+├── dashboard.php
+├── deposit.php
+├── withdraw.php
+├── history.php
+├── profile.php
+├── logout.php
+├── config/
+│   ├── database.php
+│   └── functions.php
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   └── sidebar.php
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── dashboard.css
+│   ├── js/
+│   │   ├── main.js
+│   │   ├── dashboard.js
+│   │   └── deposit.js
+│   └── images/
+│       └── logo.png
+├── api/
+│   ├── deposit.php
+│   ├── withdraw.php
+│   └── sms.php
+└── sql/
+    └── database.sql

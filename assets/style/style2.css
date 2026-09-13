@@ -1,0 +1,182 @@
+/* Assets/style/main.css - TUNZA WALETI STYLES */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.main-wrapper {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* Logo */
+.logo img {
+    max-width: 90px;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Titles */
+.title h2 {
+    color: #1a252f;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 2px;
+}
+
+/* Decorative Dash Line */
+.das {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 15px 0 25px 0;
+}
+
+.dash-1 {
+    width: 40px;
+    height: 4px;
+    background-color: #27ae60;
+    border-radius: 2px;
+}
+
+.dash-2 {
+    width: 10px;
+    height: 4px;
+    background-color: #2ecc71;
+    border-radius: 2px;
+}
+
+/* Alerts */
+.alert {
+    padding: 10px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.alert.error {
+    background-color: #fce4e4;
+    color: #cc0000;
+    border: 1px solid #f5c6cb;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Form Multi-Step Display */
+.form-step {
+    display: none;
+    flex-direction: column;
+}
+
+.form-step.active {
+    display: flex;
+}
+
+/* Inputs */
+.input-group {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #34495e;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #dcdde1;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #27ae60;
+}
+
+/* Buttons */
+.btn button,
+.btn-secondary button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn button {
+    background-color: #27ae60;
+    color: #ffffff;
+    margin-top: 5px;
+}
+
+.btn button:hover {
+    background-color: #219150;
+}
+
+.btn-secondary button {
+    background-color: #e0e0e0;
+    color: #333333;
+    margin-top: 8px;
+}
+
+.btn-secondary button:hover {
+    background-color: #d0d0d0;
+}
+
+/* Link option */
+.option {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
+.option a {
+    color: #27ae60;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.option a:hover {
+    text-decoration: underline;
+}
