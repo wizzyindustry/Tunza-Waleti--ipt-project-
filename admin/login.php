@@ -1,37 +1,38 @@
 <?php
-// login.php
-session_start();
-require_once 'database/config.php';
+// admin/login.php
 
-// Normalize PDO connection handle
+// 1. Determine active staff context before starting session
+$target_role = $_GET['role'] ?? 'admin';
+
+switch ($target_role) {
+    case 'customer_care':
+        session_name('TUNZA_CARE_OFFICER_SESSION');
+        break;
+    case 'transaction_officer':
+        session_name('TUNZA_FINANCE_OFFICER_SESSION');
+        break;
+    default:
+        session_name('TUNZA_MAIN_ADMIN_SESSION');
+        break;
+}
+
+session_start();
+require_once '../database/config.php';
+
+// Normalize PDO connection handle safely
 if (!isset($pdo) && isset($conn)) {
     $pdo = $conn;
 }
 
-// 1. Determine active context before initializing session to avoid session collision
-$target_role = $_GET['role'] ?? 'user';
-
-// If a staff actor role is targeted directly via login.php, redirect to admin/login.php
-if (in_array($target_role, ['admin', 'customer_care', 'transaction_officer'])) {
-    header("Location: admin/login.php?role=" . urlencode($target_role));
-    exit();
-}
-
-
-
-
-// 2. Automated Redirection if already authenticated in current session context
-if (isset($_SESSION['user_id'])) {
-    header("Location: pages/dashboard.php");
-    exit();
-}elseif (isset($_SESSION['admin_id'])) {
-    header("Location: admin/dashboard.php");
+// 2. Redirect if already authenticated in the staff session context
+if (isset($_SESSION['admin_id'])) {
+    header("Location: dashboard.php");
     exit();
 } elseif (isset($_SESSION['care_id'])) {
-    header("Location: admin/customer_care/dashboard.php");
+    header("Location: customer_care/dashboard.php");
     exit();
 } elseif (isset($_SESSION['finance_id'])) {
-    header("Location: admin/transaction_officer/dashboard.php");
+    header("Location: transaction_officer/dashboard.php");
     exit();
 }
 
@@ -46,40 +47,39 @@ if (isset($pdo) && $pdo !== null) {
             }
         }
     } catch (PDOException $e) {
-        // Fallback silently if table does not exist
+        // Fallback silently
     }
 }
 
 // Retrieve flash messages
-$error = $_SESSION['login_error'] ?? '';
+$error = $_SESSION['admin_login_error'] ?? '';
 $saved_identifier = $_SESSION['saved_identifier'] ?? '';
-unset($_SESSION['login_error'], $_SESSION['saved_identifier']);
+unset($_SESSION['admin_login_error'], $_SESSION['saved_identifier']);
 
-// 4. HANDLE POST LOGIN FOR CUSTOMERS
+// 4. HANDLE STAFF POST LOGIN
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identifier = trim($_POST['identifier'] ?? ''); 
     $password   = $_POST['password'] ?? '';
 
     if (empty($identifier) || empty($password)) {
-        $_SESSION['login_error'] = "Please enter both phone number/ID and password.";
+        $_SESSION['admin_login_error'] = "Please enter your staff ID/phone and password.";
         $_SESSION['saved_identifier'] = $identifier;
-        header("Location: login.php");
+        header("Location: login.php" . ($target_role !== 'admin' ? '?role=' . urlencode($target_role) : ''));
         exit();
     } else {
         try {
-            // Standardize local phone format (e.g. 0793085794 -> 255793085794)
+            // Standardize local phone format (e.g. 0700000001 -> 255700000001)
             $formattedPhone = preg_replace('/[^0-9]/', '', $identifier);
             if (strpos($formattedPhone, '0') === 0) {
                 $formattedPhone = '255' . substr($formattedPhone, 1);
             }
 
-            // Flexible query checking phone number, raw input, email, or numeric ID
+            // Fetch user record
             $stmt = $pdo->prepare("
                 SELECT * 
                 FROM users 
-                WHERE phone_number = :phone_formatted 
-                   OR phone_number = :phone_raw 
-                   OR id = :id_raw 
+                WHERE (phone_number = :phone_formatted OR phone_number = :phone_raw OR id = :id_raw)
+                  AND role IN ('admin', 'customer_care', 'transaction_officer', 'officer')
                 LIMIT 1
             ");
 
@@ -100,18 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Route to dedicated staff dashboard based on role
                 switch ($userRole) {
-                    case 'user':
-                        session_name('TUNZA_USER_SESSION');
-                        session_start();
-                        session_regenerate_id(true);
-
-                        $_SESSION['user_id']   = $user['id'];
-                        $_SESSION['user_name'] = $user['user_name'] ?? $user_name;
-                        $_SESSION['user_phone'] = $user['phone_number'] ?? 'user';
-                        $_SESSION['user_role'] = 'user';
-
-                        header("location: pages/dashboard.php");
-                        break;
                     case 'admin':
                         session_name('TUNZA_MAIN_ADMIN_SESSION');
                         session_start();
@@ -122,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['admin_phone'] = $user['phone_number'] ?? '';
                         $_SESSION['admin_role']  = 'admin';
 
-                        header("Location: admin/dashboard.php");
+                        header("Location: dashboard.php");
                         break;
 
                     case 'customer_care':
@@ -135,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['care_phone'] = $user['phone_number'] ?? '';
                         $_SESSION['care_role']  = 'customer_care';
 
-                        header("Location: admin/customer_care/dashboard.php");
+                        header("Location: customer_care/dashboard.php");
                         break;
 
                     case 'transaction_officer':
@@ -148,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['finance_phone'] = $user['phone_number'] ?? '';
                         $_SESSION['finance_role']  = 'transaction_officer';
 
-                        header("Location: admin/transaction_officer/dashboard.php");
+                        header("Location: transaction_officer/dashboard.php");
                         break;
 
                     default:
@@ -179,27 +167,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Login | Tunza Waleti</title>
-    <link rel="stylesheet" href="assets/style/style2.css">
-    <link rel="shortcut icon" href="<?= htmlspecialchars($site_logo) ?>" type="image/x-icon">
+    <title>Staff & Admin Portal | Tunza Waleti</title>
+    <link rel="stylesheet" href="../assets/style/style2.css">
+    <link rel="shortcut icon" href="../<?= htmlspecialchars($site_logo) ?>" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .main-wrapper { background: linear-gradient(135deg, #3d0037 0%, #1a0017 100%); }
+        .login-container { border-top: 4px solid #e74c3c; }
+        .btn button { background: #510049; }
+        .btn button:hover { background: #000; }
+    </style>
 </head>
 
 <body>
 
     <div class="main-wrapper">
         <div class="logo">
-            <img src="<?= htmlspecialchars($site_logo) ?>" alt="Tunza Waleti Logo">
+            <img src="../<?= htmlspecialchars($site_logo) ?>" alt="Tunza Waleti Admin Logo">
         </div>
 
         <div class="title">
-            <h2>Tunza Waleti</h2>
-            <p class="subtitle">Digital Saving Management System</p>
+            <h2 style="color: #fff;"><i class="fas fa-user-shield"></i> Staff Portal</h2>
+            <p class="subtitle" style="color: #d8c2d5;">Administrative & Operations Gateway</p>
         </div>
 
         <div class="das">
-            <div class="dash-1"></div>
-            <div class="dash-2"></div>
+            <div class="dash-1" style="background: #e74c3c;"></div>
+            <div class="dash-2" style="background: #27ae60;"></div>
         </div>
 
         <div class="login-container">
@@ -211,25 +205,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <div class="form-container">
-                <form action="login.php" method="POST">
+                <form action="login.php<?= $target_role !== 'admin' ? '?role=' . htmlspecialchars(urlencode($target_role)) : '' ?>" method="POST">
                     
                     <div class="input-group">
-                        <label for="identifier">Phone Number, Email or User ID</label>
-                        <input type="text" name="identifier" id="identifier" placeholder="e.g. 255793085794 or 212" value="<?= htmlspecialchars($saved_identifier) ?>" required>
+                        <label for="identifier">Staff Phone Number or User ID</label>
+                        <input type="text" name="identifier" id="identifier" placeholder="e.g. 0700000000, 0700000001..." value="<?= htmlspecialchars($saved_identifier) ?>" required>
                     </div>
 
                     <div class="input-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                        <label for="password">Staff Password</label>
+                        <input type="password" name="password" id="password" placeholder="Enter your staff password" required>
                     </div>
 
                     <div class="btn">
-                        <button type="submit">Login</button>
+                        <button type="submit"><i class="fas fa-lock"></i> Authenticate Staff</button>
                     </div>
 
-                    <div class="option">
-                        <p>Don't have an account? <a href="register.php">Register here</a></p>
-                        <p style="margin-top: 8px;"><a href="admin/login.php" style="color: #510049; font-weight: 600;"><i class="fas fa-user-shield"></i> Staff & Admin Portal Login</a></p>
+                    <div class="option" style="text-align: center; margin-top: 15px;">
+                        <p><a href="../login.php" style="color: #777; font-size: 13px;"><i class="fas fa-arrow-left"></i> Return to Customer Login</a></p>
                     </div>
 
                 </form>
@@ -239,29 +232,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Client-side Cross-Tab Sync Script -->
     <script>
-        // Broadcast login events across browser tabs safely
         window.addEventListener('storage', function(event) {
             if (event.key === 'tunza_session_update') {
                 const sessionData = JSON.parse(event.newValue);
                 if (sessionData && sessionData.role === 'admin') {
-                    window.location.href = 'admin/dashboard.php';
+                    window.location.href = 'dashboard.php';
                 } else if (sessionData && sessionData.role === 'customer_care') {
-                    window.location.href = 'admin/customer_care/dashboard.php';
+                    window.location.href = 'customer_care/dashboard.php';
                 } else if (sessionData && sessionData.role === 'transaction_officer') {
-                    window.location.href = 'admin/transaction_officer/dashboard.php';
-                } else if (sessionData && sessionData.role === 'user') {
-                    window.location.href = 'pages/dashboard.php';
+                    window.location.href = 'transaction_officer/dashboard.php';
                 }
             }
         });
-
-        <?php if (isset($_SESSION['user_id'])): ?>
-            localStorage.setItem('tunza_session_update', JSON.stringify({
-                user_id: '<?= $_SESSION['user_id'] ?>',
-                role: '<?= $_SESSION['user_role'] ?>',
-                time: Date.now()
-            }));
-        <?php endif; ?>
     </script>
 
 </body>

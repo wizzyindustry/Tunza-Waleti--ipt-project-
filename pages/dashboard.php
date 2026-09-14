@@ -277,6 +277,34 @@ try {
         .btn-suspend-logout:hover {
             background: #c0392b;
         }
+
+        /* customer care style */
+        .customer-care-cta{
+            margin: 20px;
+            background: #eaf2f8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .customer-care-cta-content a{
+            padding: 10px;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            gap: 8px;
+        }
+        .customer-care-cta-content a:hover{
+            background: #c0392b;
+        }
     </style>
 </head>
 
@@ -488,6 +516,16 @@ try {
                 <?php endif; ?>
             </section>
 
+        </div>
+
+        <!-------customer care CTA --------------------->
+        <div class="customer-care-cta">
+            <div class="customer-care-cta-content">
+                <i class="fas fa-headset"></i>
+                <h3>Customer Care</h3>
+                <p>Need help? Contact customer care for assistance.</p>
+                <a href="support.php" class="btn-primary">Contact Us</a>
+            </div>
         </div>
         
     </main>

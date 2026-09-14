@@ -2,7 +2,7 @@
 // admin/settings.php
 
 // 1. Set isolated administrator session name
-session_name('TUNZA_ADMIN_SESSION');
+session_name('TUNZA_MAIN_ADMIN_SESSION');
 session_start();
 
 require_once '../database/auth.php';
@@ -18,13 +18,13 @@ if (!isset($pdo) && isset($conn)) {
 }
 
 // Ensure user is logged in as an Administrator
-if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') {
-    header("Location: ../login.php");
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    header("Location: ../login.php?role=admin");
     exit();
 }
 
-$current_admin_id = $_SESSION['user_id'];
-$user_name        = $_SESSION['user_name'] ?? 'Administrator';
+$current_admin_id = $_SESSION['admin_id'];
+$user_name        = $_SESSION['admin_name'] ?? 'Administrator';
 
 // Feedback Messages
 $error_msg   = $_SESSION['admin_error'] ?? '';
