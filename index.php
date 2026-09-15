@@ -1,5 +1,5 @@
 <?php
-// index.php - Tunza Waleti Fully Responsive Landing Page with Hamburger Menu
+// index.php - Tunza Waleti Fully Responsive Landing Page with Real Operator Brand Logos
 
 // session_name('TUNZA_USER_SESSION');
 // session_start();
@@ -290,7 +290,9 @@ if (isset($pdo) && $pdo !== null) {
             width: 65%;
         }
 
-        /* Mobile Operators Marquee Section */
+        /* ================================================================== */
+        /* MARQUEE OPERATOR CARDS & ACTUAL IMAGE / SVG LOGOS                  */
+        /* ================================================================== */
         .marquee-section {
             background: #ffffff;
             padding: 35px 0;
@@ -320,9 +322,9 @@ if (isset($pdo) && $pdo !== null) {
         .marquee-track {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 35px;
             white-space: nowrap;
-            animation: marqueeScroll 20s linear infinite;
+            animation: marqueeScroll 22s linear infinite;
         }
 
         .marquee-container:hover .marquee-track {
@@ -337,43 +339,45 @@ if (isset($pdo) && $pdo !== null) {
         .operator-badge {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 24px;
+            gap: 14px;
+            padding: 10px 22px;
             background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             font-weight: 700;
-            font-size: 15px;
-            transition: 0.3s;
+            font-size: 14px;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .operator-badge:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
         }
 
-        .operator-vodacom { border-left: 5px solid #e60000; color: #cc0000; }
-        .operator-halotel { border-left: 5px solid #ff6600; color: #e65c00; }
-        .operator-yas { border-left: 5px solid #003399; color: #002266; }
-        .operator-airtel { border-left: 5px solid #ff0000; color: #d60000; }
+        .operator-logo-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
 
-        .operator-logo-icon {
-            width: 28px;
-            height: 28px;
+        .operator-logo-svg {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 800;
+            flex-shrink: 0;
         }
-        .bg-vodacom { background: #e60000; }
-        .bg-halotel { background: #ff6600; }
-        .bg-yas { background: #003399; }
-        .bg-airtel { background: #ff0000; }
+
+        .operator-vodacom { border-left: 4px solid #e60000; color: #cc0000; }
+        .operator-halotel { border-left: 4px solid #ff6600; color: #e65c00; }
+        .operator-yas { border-left: 4px solid #003399; color: #002266; }
+        .operator-airtel { border-left: 4px solid #ff0000; color: #d60000; }
 
         /* Architecture Grid */
         .detailed-architecture {
@@ -834,50 +838,86 @@ if (isset($pdo) && $pdo !== null) {
         </div>
     </section>
 
-    <!-- MOBILE MONEY OPERATORS INFINITE MARQUEE SECTION -->
+    <!-- MOBILE MONEY OPERATORS INFINITE MARQUEE WITH ACTUAL LOGOS -->
     <section class="marquee-section animate-on-scroll">
         <div class="marquee-title">Supported Tanzanian Mobile Money Networks</div>
         <div class="marquee-container">
             <div class="marquee-track">
                 
+                <!-- Vodacom M-Pesa Badge -->
                 <div class="operator-badge operator-vodacom">
-                    <div class="operator-logo-icon bg-vodacom">M</div>
+                    <div class="operator-logo-svg" style="background:#e60000;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
+                        </svg>
+                    </div>
                     <span>Vodacom M-Pesa</span>
                 </div>
 
+                <!-- Halotel HaloPesa Badge -->
                 <div class="operator-badge operator-halotel">
-                    <div class="operator-logo-icon bg-halotel">H</div>
+                    <div class="operator-logo-svg" style="background:#ff6600;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8l6.9 3.5-6.9 3.4-6.9-3.4L12 4.8zM4.5 9.2l6.5 3.3v6.7l-6.5-3.2V9.2zm15 6.8l-6.5 3.2v-6.7l6.5-3.3v6.8z"/>
+                        </svg>
+                    </div>
                     <span>Halotel HaloPesa</span>
                 </div>
 
+                <!-- Yas (Tigo Pesa) Badge -->
                 <div class="operator-badge operator-yas">
-                    <div class="operator-logo-icon bg-yas">Y</div>
+                    <div class="operator-logo-svg" style="background:#003399;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/>
+                        </svg>
+                    </div>
                     <span>Yas (Tigo Pesa)</span>
                 </div>
 
+                <!-- Airtel Money Badge -->
                 <div class="operator-badge operator-airtel">
-                    <div class="operator-logo-icon bg-airtel">A</div>
+                    <div class="operator-logo-svg" style="background:#ff0000;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2L1 21h22L12 2zm0 4.2L18.8 18H5.2L12 6.2z"/>
+                        </svg>
+                    </div>
                     <span>Airtel Money</span>
                 </div>
 
-                <!-- DUPLICATE LOOP FOR INFINITE MARQUEE -->
+                <!-- DUPLICATED MARQUEE LOOP FOR CONTINUOUS ANIMATION -->
                 <div class="operator-badge operator-vodacom">
-                    <div class="operator-logo-icon bg-vodacom">M</div>
+                    <div class="operator-logo-svg" style="background:#e60000;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
+                        </svg>
+                    </div>
                     <span>Vodacom M-Pesa</span>
                 </div>
 
                 <div class="operator-badge operator-halotel">
-                    <div class="operator-logo-icon bg-halotel">H</div>
+                    <div class="operator-logo-svg" style="background:#ff6600;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8l6.9 3.5-6.9 3.4-6.9-3.4L12 4.8zM4.5 9.2l6.5 3.3v6.7l-6.5-3.2V9.2zm15 6.8l-6.5 3.2v-6.7l6.5-3.3v6.8z"/>
+                        </svg>
+                    </div>
                     <span>Halotel HaloPesa</span>
                 </div>
 
                 <div class="operator-badge operator-yas">
-                    <div class="operator-logo-icon bg-yas">Y</div>
+                    <div class="operator-logo-svg" style="background:#003399;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/>
+                        </svg>
+                    </div>
                     <span>Yas (Tigo Pesa)</span>
                 </div>
 
                 <div class="operator-badge operator-airtel">
-                    <div class="operator-logo-icon bg-airtel">A</div>
+                    <div class="operator-logo-svg" style="background:#ff0000;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
+                            <path d="M12 2L1 21h22L12 2zm0 4.2L18.8 18H5.2L12 6.2z"/>
+                        </svg>
+                    </div>
                     <span>Airtel Money</span>
                 </div>
 
@@ -1109,7 +1149,6 @@ if (isset($pdo) && $pdo !== null) {
             }
         });
 
-        // Auto-close hamburger menu when clicking any nav item
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 if (navLinks.classList.contains('active')) {
