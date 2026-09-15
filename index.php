@@ -846,47 +846,55 @@ if (isset($pdo) && $pdo !== null) {
                 
                 <!-- Vodacom M-Pesa Badge -->
                 <div class="operator-badge operator-vodacom">
-                    <div class="operator-logo-icon bg-vodacom">M</div>
-                    <span>Vodacom M-Pesa</span>
+                    <!-- <div class="operator-logo-icon bg-vodacom">M</div> -->
+                     <img src="assets/images/vodacom-seeklogo.png" alt="vodacome logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Vodacom M-Pesa</span> -->
                 </div>
 
                 <!-- Halotel HaloPesa Badge -->
                 <div class="operator-badge operator-halotel">
-                    <div class="operator-logo-icon bg-halotel">H</div>
-                    <span>Halotel HaloPesa</span>
+                    <!-- <div class="operator-logo-icon bg-halotel">H</div> -->
+                     <img src="assets/images/halopesa-seeklogo.png" alt="halotel logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Halotel HaloPesa</span> -->
                 </div>
 
                 <!-- Yas (Tigo Pesa) Badge -->
                 <div class="operator-badge operator-yas">
-                    <div class="operator-logo-icon bg-yas">Y</div>
-                    <span>Yas (Tigo Pesa)</span>
+                    <!-- <div class="operator-logo-icon bg-yas">Y</div> -->
+                     <img src="assets/images/mixx-by-yas-seeklogo.png" alt="tigo-pesa logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Yas (Tigo Pesa)</span> -->
                 </div>
 
                 <!-- Airtel Money Badge -->
                 <div class="operator-badge operator-airtel">
-                    <div class="operator-logo-icon bg-airtel">A</div>
-                    <span>Airtel Money</span>
+                    <!-- <div class="operator-logo-icon bg-airtel">A</div> -->
+                    <img src="assets/images/airtel-seeklogo.png" alt="airtel-money logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Airtel Money</span> -->
                 </div>
 
                 <!-- DUPLICATED MARQUEE LOOP FOR CONTINUOUS ANIMATION -->
                 <div class="operator-badge operator-vodacom">
-                    <div class="operator-logo-icon bg-vodacom">M</div>
-                    <span>Vodacom M-Pesa</span>
+                    <!-- <div class="operator-logo-icon bg-vodacom">M</div> -->
+                    <img src="assets/images/vodacom-seeklogo.png" alt="vodacome logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Vodacom M-Pesa</span> -->
                 </div>
 
                 <div class="operator-badge operator-halotel">
-                    <div class="operator-logo-icon bg-halotel">H</div>
-                    <span>Halotel HaloPesa</span>
+                    <!-- <div class="operator-logo-icon bg-halotel">H</div> -->
+                    <img src="assets/images/halopesa-seeklogo.png" alt="halotel logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Halotel HaloPesa</span> -->
                 </div>
 
                 <div class="operator-badge operator-yas">
-                    <div class="operator-logo-icon bg-yas">Y</div>
-                    <span>Yas (Tigo Pesa)</span>
+                    <!-- <div class="operator-logo-icon bg-yas">Y</div> -->
+                    <img src="assets/images/mixx-by-yas-seeklogo.png" alt="tigo-pesa logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Yas (Tigo Pesa)</span> -->
                 </div>
 
                 <div class="operator-badge operator-airtel">
-                    <div class="operator-logo-icon bg-airtel">A</div>
-                    <span>Airtel Money</span>
+                    <!-- <div class="operator-logo-icon bg-airtel">A</div> -->
+                    <img src="assets/images/airtel-seeklogo.png" alt="airtel-money logo" style="width: 90px; height: 90px;">
+                    <!-- <span>Airtel Money</span> -->
                 </div>
                 
             </div>
