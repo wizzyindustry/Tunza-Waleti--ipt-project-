@@ -66,11 +66,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title          = trim($_POST['title'] ?? '');
     $target_amount  = filter_var($_POST['target_amount'] ?? 0, FILTER_VALIDATE_FLOAT);
     $initial_amount = filter_var($_POST['initial_amount'] ?? 0, FILTER_VALIDATE_FLOAT);
+    $duration_value = filter_var($_POST['duration_value'] ?? 1, FILTER_VALIDATE_INT);
+    $duration_type  = trim($_POST['duration_type'] ?? 'months');
 
     // Initial amount defaults to 0.00 if omitted or invalid
     if ($initial_amount === false || $initial_amount < 0) {
         $initial_amount = 0.00;
     }
+
+    // Validate Duration
+    $allowed_types = ['days', 'weeks', 'months', 'years'];
+    if (!in_array($duration_type, $allowed_types)) {
+        $duration_type = 'months';
+    }
+    if ($duration_value === false || $duration_value <= 0) {
+        $duration_value = 1;
+    }
+
+    // Calculate Target End Date based on duration
+    $target_date = date('Y-m-d H:i:s', strtotime("+{$duration_value} {$duration_type}"));
 
     // Input Validation
     if (empty($title)) {
@@ -97,18 +111,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($error)) {
                 $pdo->beginTransaction();
 
-                // Insert new goal record
-                $stmt = $pdo->prepare("
-                    INSERT INTO savings_goals (user_id, title, target_amount, current_amount) 
-                    VALUES (:user_id, :title, :target_amount, :current_amount)
-                ");
+                // Dynamically detect column availability in savings_goals
+                $hasTargetDate    = false;
+                $hasDurationVal   = false;
+                $hasDurationType  = false;
 
-                $stmt->execute([
-                    'user_id'        => $user_id,
-                    'title'          => $title,
-                    'target_amount'  => $target_amount,
-                    'current_amount' => $initial_amount
-                ]);
+                try {
+                    $cols = $pdo->query("SHOW COLUMNS FROM savings_goals")->fetchAll(PDO::FETCH_COLUMN);
+                    $hasTargetDate   = in_array('target_date', $cols) || in_array('deadline', $cols);
+                    $hasDurationVal  = in_array('duration_value', $cols);
+                    $hasDurationType = in_array('duration_type', $cols);
+                } catch (PDOException $e) {}
+
+                // Build insert query
+                $fields = ['user_id', 'title', 'target_amount', 'current_amount'];
+                $params = [
+                    ':user_id'        => $user_id,
+                    ':title'          => $title,
+                    ':target_amount'  => $target_amount,
+                    ':current_amount' => $initial_amount
+                ];
+
+                if ($hasTargetDate) {
+                    $dateCol = in_array('target_date', $cols) ? 'target_date' : 'deadline';
+                    $fields[] = $dateCol;
+                    $params[':' . $dateCol] = $target_date;
+                }
+                if ($hasDurationVal) {
+                    $fields[] = 'duration_value';
+                    $params[':duration_value'] = $duration_value;
+                }
+                if ($hasDurationType) {
+                    $fields[] = 'duration_type';
+                    $params[':duration_type'] = $duration_type;
+                }
+
+                $sql = "INSERT INTO savings_goals (" . implode(', ', $fields) . ") VALUES (" . implode(', ', array_keys($params)) . ")";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute($params);
 
                 // If initial deposit allocated, deduct from wallet and record transaction
                 if ($initial_amount > 0) {
@@ -117,8 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $ref_no = 'GLD-' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
                     $txnStmt = $pdo->prepare("
-                        INSERT INTO transactions (user_id, reference_no, type, amount, status, payment_method, description) 
-                        VALUES (:user_id, :ref, 'deposit', :amount, 'completed', 'Wallet Balance', :desc)
+                        INSERT INTO transactions (user_id, reference_no, type, amount, status, payment_method, description, created_at) 
+                        VALUES (:user_id, :ref, 'savings', :amount, 'completed', 'Wallet Balance', :desc, NOW())
                     ");
                     $txnStmt->execute([
                         'user_id' => $user_id,
@@ -130,17 +170,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $pdo->commit();
 
-                // Set success message for session
                 $_SESSION['success_msg'] = 'Target goal created successfully!';
 
-                // Handle AJAX response
                 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                     header('Content-Type: application/json');
                     echo json_encode(['status' => 'success', 'message' => 'Goal created successfully!']);
                     exit();
                 }
 
-                // Redirect to user dashboard
                 header('Location: dashboard.php');
                 exit();
             }
@@ -153,7 +190,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Handle AJAX error output
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
         header('Content-Type: application/json');
         echo json_encode(['status' => 'error', 'message' => $error]);
@@ -193,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .goal-page-wrapper {
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             margin: 40px auto;
             background: #ffffff;
             padding: 35px 28px;
@@ -277,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-bottom: 6px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             height: 46px;
             padding: 10px 14px;
@@ -286,11 +322,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 14px;
             outline: none;
             transition: border-color 0.3s ease;
+            background-color: #fff;
         }
 
-        .input-group input:focus {
+        .input-group input:focus, .input-group select:focus {
             border-color: #510049;
             box-shadow: 0 0 0 3px rgba(81, 0, 73, 0.1);
+        }
+
+        /* Dual Input Row for Time Duration */
+        .duration-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .target-date-preview {
+            background: #eaf2f8;
+            color: #2980b9;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: -6px;
+            margin-bottom: 18px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Action Buttons */
@@ -374,7 +433,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="title">
                 <h2>Create Savings Goal</h2>
-                <p class="subtitle">Set your target and lock your savings</p>
+                <p class="subtitle">Set your target, timeline, and lock your savings</p>
             </div>
 
             <div class="das">
@@ -404,6 +463,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="number" step="0.01" min="0" name="initial_amount" id="initial_amount" placeholder="0.00" value="<?= htmlspecialchars($_POST['initial_amount'] ?? '') ?>">
                 </div>
 
+                <!-- Goal Time Duration Section -->
+                <div class="input-group">
+                    <label>Goal Target Duration</label>
+                    <div class="duration-grid">
+                        <input type="number" name="duration_value" id="duration_value" min="1" max="365" value="<?= htmlspecialchars($_POST['duration_value'] ?? '1') ?>" required placeholder="e.g. 6">
+                        <select name="duration_type" id="duration_type" required>
+                            <option value="days" <?= (($_POST['duration_type'] ?? '') === 'days') ? 'selected' : '' ?>>Days</option>
+                            <option value="weeks" <?= (($_POST['duration_type'] ?? '') === 'weeks') ? 'selected' : '' ?>>Weeks</option>
+                            <option value="months" <?= (($_POST['duration_type'] ?? 'months') === 'months') ? 'selected' : '' ?>>Months</option>
+                            <option value="years" <?= (($_POST['duration_type'] ?? '') === 'years') ? 'selected' : '' ?>>Years</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="target-date-preview" id="datePreview">
+                    <i class="fas fa-calendar-alt"></i> Goal Completion Date: <strong id="previewDateStr">--</strong>
+                </div>
+
                 <div class="btn">
                     <button type="submit">Create Goal</button>
                 </div>
@@ -415,8 +492,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-    <!-- Client-side Cross-Tab Sync Listener -->
+    <!-- Dynamic Date Calculation Listener -->
     <script>
+        function updateDatePreview() {
+            const valInput = document.getElementById('duration_value');
+            const typeSelect = document.getElementById('duration_type');
+            const previewStr = document.getElementById('previewDateStr');
+
+            let num = parseInt(valInput.value, 10);
+            if (isNaN(num) || num < 1) num = 1;
+
+            const unit = typeSelect.value;
+            const now = new Date();
+
+            if (unit === 'days') {
+                now.setDate(now.getDate() + num);
+            } else if (unit === 'weeks') {
+                now.setDate(now.getDate() + (num * 7));
+            } else if (unit === 'months') {
+                now.setMonth(now.getMonth() + num);
+            } else if (unit === 'years') {
+                now.setFullYear(now.getFullYear() + num);
+            }
+
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            previewStr.innerText = now.toLocaleDateString('en-US', options);
+        }
+
+        document.getElementById('duration_value').addEventListener('input', updateDatePreview);
+        document.getElementById('duration_type').addEventListener('change', updateDatePreview);
+        window.addEventListener('DOMContentLoaded', updateDatePreview);
+
+        // Client-side Cross-Tab Sync Listener
         window.addEventListener('storage', function(event) {
             if (event.key === 'tunza_session_update') {
                 const sessionData = JSON.parse(event.newValue);
