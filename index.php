@@ -846,86 +846,46 @@ if (isset($pdo) && $pdo !== null) {
                 
                 <!-- Vodacom M-Pesa Badge -->
                 <div class="operator-badge operator-vodacom">
-                    <!-- <div class="operator-logo-svg" style="background:#e60000;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
-                        </svg>
-                    </div> -->
-                    <img src="assets/images/vodacom-seeklogo.png" alt="vodacome logo"  style="width:90px; height: 90px;">
+                    <div class="operator-logo-icon bg-vodacom">M</div>
                     <span>Vodacom M-Pesa</span>
                 </div>
 
                 <!-- Halotel HaloPesa Badge -->
                 <div class="operator-badge operator-halotel">
-                    <!-- <div class="operator-logo-svg" style="background:#ff6600;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8l6.9 3.5-6.9 3.4-6.9-3.4L12 4.8zM4.5 9.2l6.5 3.3v6.7l-6.5-3.2V9.2zm15 6.8l-6.5 3.2v-6.7l6.5-3.3v6.8z"/>
-                        </svg>
-                    </div> -->
-                    <img src="assets/images/halopesa-seeklogo.png" alt="yas logo" style="width:90px; height:90px;">
+                    <div class="operator-logo-icon bg-halotel">H</div>
                     <span>Halotel HaloPesa</span>
                 </div>
 
                 <!-- Yas (Tigo Pesa) Badge -->
                 <div class="operator-badge operator-yas">
-                    <!-- <div class="operator-logo-svg" >
-                         <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/>
-                        </svg> 
-                    </div> -->
-                    <img src="assets/images/mixx-by-yas-seeklogo.png" alt="yas logo" style="width:90px; height:90px;">
+                    <div class="operator-logo-icon bg-yas">Y</div>
                     <span>Yas (Tigo Pesa)</span>
                 </div>
 
                 <!-- Airtel Money Badge -->
                 <div class="operator-badge operator-airtel">
-                    <!-- <div class="operator-logo-svg" style="background:#ff0000;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2L1 21h22L12 2zm0 4.2L18.8 18H5.2L12 6.2z"/>
-                        </svg>
-                    </div> -->
-                    <img src="assets/images/airtel-seeklogo.png" alt="airtel logo" style="width:90px; height:90px; ">
+                    <div class="operator-logo-icon bg-airtel">A</div>
                     <span>Airtel Money</span>
                 </div>
 
                 <!-- DUPLICATED MARQUEE LOOP FOR CONTINUOUS ANIMATION -->
                 <div class="operator-badge operator-vodacom">
-                    <!-- <div class="operator-logo-svg" style="background:#e60000;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
-                        </svg>
-                    </div> -->
-                    <img src="assets/images/vodacom-seeklogo.png" alt="vodacome logo"  style="width:90px; height:90px;">
+                    <div class="operator-logo-icon bg-vodacom">M</div>
                     <span>Vodacom M-Pesa</span>
                 </div>
 
                 <div class="operator-badge operator-halotel">
-                    <!-- <div class="operator-logo-svg" style="background:#ff6600;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8l6.9 3.5-6.9 3.4-6.9-3.4L12 4.8zM4.5 9.2l6.5 3.3v6.7l-6.5-3.2V9.2zm15 6.8l-6.5 3.2v-6.7l6.5-3.3v6.8z"/>
-                        </svg>
-                    </div> -->
-                    <img src="assets/images/halopesa-seeklogo.png" alt="yas logo" style="width:90px; height:90px; ">
+                    <div class="operator-logo-icon bg-halotel">H</div>
                     <span>Halotel HaloPesa</span>
                 </div>
 
                 <div class="operator-badge operator-yas">
-                    <!-- <div class="operator-logo-svg" style="background:#003399;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z"/>
-                        </svg>
-                    </div> -->
-                    <img src="assets/images/mixx-by-yas-seeklogo.png" alt="yas logo" style="width:90px; height:90px;">
+                    <div class="operator-logo-icon bg-yas">Y</div>
                     <span>Yas (Tigo Pesa)</span>
                 </div>
 
                 <div class="operator-badge operator-airtel">
-                    <!-- <div class="operator-logo-svg" style="background:#ff0000;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff">
-                            <path d="M12 2L1 21h22L12 2zm0 4.2L18.8 18H5.2L12 6.2z"/>
-                        </svg>
-                    </div>-->
-                    <img src="assets/images/airtel-seeklogo.png" alt="airtel logo" style="width:90px; height:90px;">
+                    <div class="operator-logo-icon bg-airtel">A</div>
                     <span>Airtel Money</span>
                 </div>
                 
