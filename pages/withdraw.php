@@ -56,7 +56,7 @@ $cp_client_id  = $settings['clickpesa_client_id']    ?? 'IDXaiifCqpiVlSY0dxAguzc
 $cp_api_key    = $settings['clickpesa_api_key']      ?? 'SKj94nhpa4oDQav9GUJOtC6gwumVxwJOVhxp10a54s';
 $cp_checksum   = $settings['clickpesa_checksum_key'] ?? 'CHKawxG15lEwseaRTNBcoGOaGwAIIeI1RPJ';
 
-$min_withdraw  = (float)($settings['min_withdraw_limit']  ?? 1000);
+$min_withdraw  = (float)($settings['min_withdraw_limit']  ?? 500);
 $max_withdraw  = (float)($settings['max_withdraw_limit']  ?? 1000000);
 $withdraw_fee  = (float)($settings['withdrawal_fee_percent'] ?? 1.5);
 
@@ -183,12 +183,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $phoneNumber = '255' . substr($phoneNumber, 1);
     }
 
-    if ($amount === false || $amount < $min_withdraw) {
+    if ($amount === false || $amount > $min_withdraw) {
         echo json_encode(['success' => false, 'message' => "Minimum withdrawal amount is " . $currency . " " . number_format($min_withdraw, 2)]);
         exit;
     }
 
-    if ($amount > $max_withdraw) {
+    if ($amount < $max_withdraw) {
         echo json_encode(['success' => false, 'message' => "Maximum allowed withdrawal per request is " . $currency . " " . number_format($max_withdraw, 2)]);
         exit;
     }
@@ -556,7 +556,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             border-radius: 8px;
             font-size: 14px;
             box-sizing: border-box;
-            background-color: #ffffff;
+            color: #000;
+            background: #ffffff;
             transition: 0.3s;
         }
 
@@ -982,7 +983,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             const method    = document.getElementById('wth_method').value;
             const accountNo = document.getElementById('wth_account').value.trim();
 
-            if (!amount || amount < minWithdraw) {
+            if (!amount || amount > minWithdraw) {
                 showPopup('Invalid Amount', 'Minimum withdrawal amount is TZS ' + minWithdraw.toLocaleString(), 'warning');
                 return;
             }

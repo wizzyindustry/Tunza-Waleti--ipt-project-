@@ -467,13 +467,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             border-radius: 8px;
             font-size: 14px;
             box-sizing: border-box;
-            background-color: #ffffff;
+            color: #000;
+            background: #fff;
             transition: 0.3s;
         }
 
         .input-group input:focus, .input-group select:focus {
             border-color: var(--primary-purple);
             outline: none;
+            color: #000;
             box-shadow: 0 0 0 3px rgba(81, 0, 73, 0.1);
         }
 
